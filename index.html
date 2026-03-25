@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#080b12">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>NovaTEch BD</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Amiri:wght@400;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg-base:     #080b12;
+  --bg-surface:  #0d1220;
+  --bg-card:     #111827;
+  --bg-elevated: #162033;
+  --bg-input:    #0d1525;
+  --gold:        #f5c842;
+  --gold-mid:    #d4a017;
+  --blue:        #3b82f6;
+  --green:       #10b981;
+  --red:         #ef4444;
+  --text:        #f1f5f9;
+  --text-2:      #94a3b8;
+  --text-3:      #475569;
+  --border:      rgba(99,179,237,0.08);
+  --border-gold: rgba(245,200,66,0.25);
+  --font-bn:     'Hind Siliguri', sans-serif;
+  --font-ar:     'Amiri', serif;
+  --font-en:     'Sora', sans-serif;
+  --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:20px; --r-2xl:28px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{font-family:var(--font-bn);background:var(--bg-base);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+
+/* Loader */
+#loader{position:fixed;inset:0;background:var(--bg-base);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:9999;}
+.ld-logo{font-family:var(--font-en);font-size:22px;font-weight:800;}
+.ld-logo span{color:var(--gold);}
+.ld-ring{width:34px;height:34px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;}
+.ld-txt{font-size:12px;color:var(--text-3);}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Auth */
+#authScreen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px 40px;position:relative;overflow:hidden;}
+#authScreen::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 70% 50% at 15% 5%,rgba(245,200,66,.07) 0%,transparent 55%),radial-gradient(ellipse 50% 40% at 85% 15%,rgba(59,130,246,.06) 0%,transparent 55%),radial-gradient(ellipse 60% 50% at 50% 95%,rgba(139,92,246,.05) 0%,transparent 55%);}
+#authScreen::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(245,200,66,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(245,200,66,.02) 1px,transparent 1px);background-size:44px 44px;}
+.auth-wrap{position:relative;z-index:1;width:100%;max-width:400px;animation:fadeUp .6s cubic-bezier(.22,1,.36,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+/* Bismillah */
+.bism-wrap{text-align:center;margin-bottom:26px;}
+.bism-line{width:56px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-mid),transparent);margin:0 auto 13px;}
+.bism-ar{font-family:var(--font-ar);font-size:26px;font-weight:700;color:var(--gold);direction:rtl;text-shadow:0 0 30px rgba(245,200,66,.4),0 0 60px rgba(245,200,66,.12);line-height:1.7;}
+.bism-bn{font-size:11px;color:var(--text-3);margin-top:5px;}
+
+/* Brand */
+.brand-wrap{text-align:center;margin-bottom:24px;}
+.brand-icon{width:66px;height:66px;border-radius:18px;margin:0 auto 13px;background:linear-gradient(135deg,#1a2540,#111827);border:1.5px solid var(--border-gold);display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(245,200,66,.1),inset 0 1px 0 rgba(245,200,66,.1);position:relative;overflow:hidden;}
+.brand-icon::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(245,200,66,.07),transparent 60%);}
+.brand-icon-ico{font-size:28px;position:relative;z-index:1;filter:drop-shadow(0 0 8px rgba(245,200,66,.5));}
+.brand-name{font-family:var(--font-en);font-size:23px;font-weight:800;letter-spacing:-.5px;}
+.brand-name span{color:var(--gold);}
+.brand-tag{font-size:11.5px;color:var(--text-3);margin-top:3px;}
+
+/* Login Card */
+.login-card{background:linear-gradient(145deg,rgba(17,24,39,.97),rgba(13,18,32,.99));border:1px solid var(--border);border-radius:var(--r-2xl);padding:26px 22px;box-shadow:0 4px 24px rgba(0,0,0,.4),0 0 40px rgba(245,200,66,.08);position:relative;overflow:hidden;backdrop-filter:blur(20px);}
+.login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(245,200,66,.4),transparent);}
+.card-title{font-size:16px;font-weight:700;margin-bottom:3px;}
+.card-sub{font-size:12px;color:var(--text-3);margin-bottom:20px;}
+
+/* Tabs */
+.method-tabs{display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--bg-input);border-radius:var(--r-md);padding:3px;margin-bottom:18px;border:1px solid var(--border);}
+.mtab{padding:8px 4px;border:none;background:none;border-radius:var(--r-sm);font-family:var(--font-bn);font-size:11px;font-weight:600;color:var(--text-3);cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.mtab .ico{font-size:14px;}
+.mtab.active{background:linear-gradient(135deg,#1e2d4a,#1a2538);color:var(--gold);box-shadow:0 2px 8px rgba(0,0,0,.3),inset 0 1px 0 rgba(245,200,66,.1);}
+
+/* Error */
+.auth-err{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:var(--r-sm);padding:9px 12px;font-size:12px;color:#fca5a5;margin-bottom:14px;display:none;align-items:center;gap:7px;}
+.auth-err.show{display:flex;animation:shake .35s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* Input */
+.inp-group{margin-bottom:13px;}
+.inp-lbl{font-size:10.5px;font-weight:600;color:var(--text-2);margin-bottom:5px;display:flex;align-items:center;gap:5px;text-transform:uppercase;letter-spacing:.4px;}
+.inp-wrap{position:relative;}
+.inp{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 40px 12px 14px;color:var(--text);font-family:var(--font-bn);font-size:14px;outline:none;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.25);}
+.inp::placeholder{color:var(--text-3);font-size:13px;}
+.inp:focus{border-color:rgba(245,200,66,.5);background:rgba(13,21,37,.95);box-shadow:0 0 0 3px rgba(245,200,66,.07);}
+.inp-ic{position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--text-3);pointer-events:none;transition:color .2s;}
+.inp:focus+.inp-ic{color:var(--gold-mid);}
+.inp-wrap.tog .inp{padding-right:68px;}
+.pass-tog{position:absolute;right:11px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-3);cursor:pointer;font-size:14px;padding:4px;transition:color .2s;}
+.pass-tog:hover{color:var(--gold);}
+
+/* Button */
+.btn-login{width:100%;padding:14px;border:none;border-radius:var(--r-md);background:linear-gradient(135deg,#c9961a,#f5c842 50%,#d4a017);color:#0d0900;font-family:var(--font-bn);font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(245,200,66,.28),inset 0 1px 0 rgba(255,255,255,.1);margin-top:6px;}
+.btn-login::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transition:left .4s;}
+.btn-login:hover::before{left:100%;}
+.btn-login:active{transform:scale(.98);}
+.btn-login.loading{pointer-events:none;opacity:.8;}
+.btn-spin{display:none;width:16px;height:16px;border:2px solid rgba(0,0,0,.3);border-top-color:#000;border-radius:50%;animation:spin .6s linear infinite;margin:0 auto;}
+.btn-login.loading .btn-txt{display:none;}
+.btn-login.loading .btn-spin{display:block;}
+
+/* Footer */
+.auth-footer{text-align:center;margin-top:18px;}
+.auth-footer p{font-size:11px;color:var(--text-3);}
+.auth-footer p span{color:var(--gold-mid);font-weight:600;}
+.role-pills{display:flex;gap:6px;justify-content:center;margin-top:9px;}
+.rpill{font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;}
+.rp-a{background:rgba(245,200,66,.1);color:var(--gold);border:1px solid rgba(245,200,66,.2);}
+.rp-m{background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.2);}
+.rp-w{background:rgba(16,185,129,.1);color:#34d399;border:1px solid rgba(16,185,129,.2);}
+
+/* App */
+#appScreen{display:none;min-height:100vh;background:var(--bg-base);max-width:430px;margin:0 auto;}
+.topbar{position:sticky;top:0;z-index:100;background:var(--bg-surface);border-bottom:1px solid var(--border);padding:12px 16px 10px;display:flex;align-items:center;justify-content:space-between;}
+.tb-logo{font-family:var(--font-en);font-size:17px;font-weight:800;}
+.tb-logo span{color:var(--gold);}
+.role-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;margin-top:2px;}
+.rb-admin{background:rgba(245,200,66,.12);color:var(--gold);}
+.rb-manager{background:rgba(59,130,246,.12);color:#60a5fa;}
+.rb-worker{background:rgba(16,185,129,.12);color:#34d399;}
+.tb-right{display:flex;align-items:center;gap:10px;}
+.tb-name{font-size:11px;color:var(--text-3);max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tb-out{background:none;border:1px solid var(--border);border-radius:8px;color:var(--text-3);font-size:13px;padding:5px 9px;cursor:pointer;transition:all .2s;}
+.tb-out:hover{border-color:var(--red);color:#f87171;}
+/* Avatar */
+.tb-avatar{width:36px;height:36px;border-radius:50%;border:2px solid var(--border-gold);background:linear-gradient(135deg,#1e2d4a,#1a2538);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:0;transition:all .2s;flex-shrink:0;box-shadow:0 0 10px rgba(245,200,66,.15);}
+.tb-avatar:hover{border-color:var(--gold);box-shadow:0 0 14px rgba(245,200,66,.3);}
+.tb-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+#tbAvatarInitial{font-family:var(--font-en);font-size:14px;font-weight:700;color:var(--gold);line-height:1;}
+.tb-name{display:none;}
+
+/* Pages */
+#pages{padding-bottom:72px;}
+.page{display:none;}
+.page.active{display:block;animation:pageFade .25s ease;}
+@keyframes pageFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.page-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:70px 20px;gap:10px;}
+.ph-ico{font-size:44px;}
+.ph-title{font-size:15px;font-weight:700;}
+.ph-sub{font-size:12px;color:var(--text-3);}
+
+/* Bottom Nav */
+#bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--bg-surface);border-top:1px solid var(--border);display:flex;align-items:stretch;z-index:150;padding-bottom:env(safe-area-inset-bottom,0px);}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px 6px;gap:3px;background:none;border:none;cursor:pointer;font-family:var(--font-bn);position:relative;transition:background .15s;}
+.nb:active{background:rgba(255,255,255,.03);}
+.nb-ico{font-size:20px;line-height:1;transition:transform .2s;}
+.nb-lbl{font-size:10px;font-weight:600;color:var(--text-3);}
+.nb.active .nb-lbl{color:var(--gold);}
+.nb.active .nb-ico{transform:scale(1.15);filter:drop-shadow(0 0 5px var(--gold));}
+.nb-dot{position:absolute;top:5px;right:calc(50% - 16px);width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--bg-surface);display:none;}
+.nb-dot.show{display:block;}
+
+/* Drawer */
+.dr-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:160;backdrop-filter:blur(3px);}
+.dr-ov.open{display:block;}
+#drawer{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:430px;background:var(--bg-surface);border-radius:22px 22px 0 0;border-top:1px solid var(--border);z-index:170;padding:0 16px 80px;transition:transform .32s cubic-bezier(.32,1,.6,1);max-height:85vh;overflow-y:auto;}
+#drawer.open{transform:translateX(-50%) translateY(0);}
+.dr-handle{width:40px;height:4px;border-radius:2px;background:var(--border);margin:12px auto 8px;}
+.dr-title{font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;}
+.dr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;}
+.dr-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;font-family:var(--font-bn);transition:all .18s;}
+.dr-item:active{background:var(--bg-elevated);border-color:var(--border-gold);}
+.dr-ico{font-size:22px;}
+.dr-lbl{font-size:10px;font-weight:600;color:var(--text-2);}
+.dr-logout{border-top:1px solid var(--border);padding-top:14px;}
+.dr-logout button{width:100%;padding:12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:var(--r-md);color:#f87171;font-family:var(--font-bn);font-size:13px;font-weight:700;cursor:pointer;}
+
+/* Toast */
+.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--r-md);padding:10px 18px;font-size:13px;color:var(--text);font-family:var(--font-bn);z-index:9999;opacity:0;transition:all .3s cubic-bezier(.22,1,.36,1);white-space:nowrap;max-width:85vw;box-shadow:0 8px 30px rgba(0,0,0,.4);pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.err{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.3);color:#fca5a5;}
+.toast.ok{background:rgba(16,185,129,.15);border-color:rgba(16,185,129,.3);color:#6ee7b7;}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="ld-logo">Nova<span>TEch</span> BD</div>
+  <div class="ld-ring"></div>
+  <div class="ld-txt">লোড হচ্ছে...</div>
+</div>
+
+<!-- Auth Screen -->
+<div id="authScreen">
+  <div class="auth-wrap">
+
+    <div class="bism-wrap">
+      <div class="bism-line"></div>
+      <div class="bism-ar">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+      <div class="bism-bn">পরম করুণাময় আল্লাহর নামে শুরু করছি</div>
+      <div class="bism-line" style="margin-top:13px;margin-bottom:0"></div>
+    </div>
+
+    <div class="brand-wrap">
+      <div class="brand-icon"><div class="brand-icon-ico">⚡</div></div>
+      <div class="brand-name">Nova<span>TEch</span> BD</div>
+      <div class="brand-tag">স্মার্ট বিজনেস ম্যানেজমেন্ট সিস্টেম</div>
+    </div>
+
+    <div class="login-card">
+      <div class="card-title">স্বাগতম 👋</div>
+      <div class="card-sub">আপনার অ্যাকাউন্টে লগইন করুন</div>
+
+      <div class="method-tabs">
+        <button class="mtab active" onclick="switchMethod('email')" id="tab-email"><span class="ico">✉️</span><span>ইমেইল</span></button>
+        <button class="mtab" onclick="switchMethod('phone')" id="tab-phone"><span class="ico">📱</span><span>মোবাইল</span></button>
+        <button class="mtab" onclick="switchMethod('empid')" id="tab-empid"><span class="ico">🪪</span><span>EMP ID</span></button>
+      </div>
+
+      <div class="auth-err" id="authErr"><span>⚠️</span><span id="authErrTxt">ভুল তথ্য।</span></div>
+
+      <div class="inp-group" id="f-email">
+        <div class="inp-lbl">✉️ ইমেইল ঠিকানা</div>
+        <div class="inp-wrap"><input class="inp" type="email" id="iEmail" placeholder="example@email.com" autocomplete="email"><span class="inp-ic">@</span></div>
+      </div>
+      <div class="inp-group" id="f-phone" style="display:none">
+        <div class="inp-lbl">📱 মোবাইল নম্বর</div>
+        <div class="inp-wrap"><input class="inp" type="tel" id="iPhone" placeholder="01XXXXXXXXX"><span class="inp-ic">📞</span></div>
+      </div>
+      <div class="inp-group" id="f-empid" style="display:none">
+        <div class="inp-lbl">🪪 Employee ID</div>
+        <div class="inp-wrap"><input class="inp" type="text" id="iEmpId" placeholder="NTB-XXXX" style="text-transform:uppercase"><span class="inp-ic">🏷️</span></div>
+      </div>
+
+      <div class="inp-group">
+        <div class="inp-lbl">🔐 পাসওয়ার্ড</div>
+        <div class="inp-wrap tog">
+          <input class="inp" type="password" id="iPass" placeholder="••••••••" autocomplete="current-password">
+          <button class="pass-tog" id="passTogBtn" onclick="togglePass()" type="button">👁️</button>
+        </div>
+      </div>
+
+      <button class="btn-login" id="loginBtn" onclick="doLogin()">
+        <span class="btn-txt">🔓 লগইন করুন</span>
+        <div class="btn-spin"></div>
+      </button>
+    </div>
+
+    <div class="auth-footer">
+      <p>Powered by <span>NovaTEch BD</span> &nbsp;|&nbsp; v2.0</p>
+      <div class="role-pills">
+        <span class="rpill rp-a">Admin</span>
+        <span class="rpill rp-m">Manager</span>
+        <span class="rpill rp-w">Worker</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- App Screen -->
+<div id="appScreen">
+  <div class="topbar">
+    <div>
+      <div class="tb-logo">Nova<span>TEch</span></div>
+      <div class="role-badge" id="roleBadge"></div>
+    </div>
+    <div class="tb-right">
+      <button class="tb-out" onclick="doLogout()" title="লগআউট">⏻</button>
+      <button class="tb-avatar" onclick="goTo('profile')" id="tbAvatar" title="প্রোফাইল">
+        <img id="tbAvatarImg" src="" alt="" style="display:none">
+        <span id="tbAvatarInitial"></span>
+      </button>
+    </div>
+  </div>
+  <div id="pages">
+    <div class="page" id="page-dash"></div>
+    <div class="page" id="page-sale"></div>
+    <div class="page" id="page-cust"></div>
+    <div class="page" id="page-stock"></div>
+    <div class="page" id="page-att"></div>
+    <div class="page" id="page-salary"></div>
+    <div class="page" id="page-exp"></div>
+    <div class="page" id="page-tasks"></div>
+    <div class="page" id="page-chat"></div>
+    <div class="page" id="page-replace"></div>
+    <div class="page" id="page-analytics"></div>
+    <div class="page" id="page-teams"></div>
+    <div class="page" id="page-profile"></div>
+  </div>
+  <nav id="bnav"></nav>
+  <div class="dr-ov" id="drawerOv" onclick="closeDrawer()"></div>
+  <div id="drawer">
+    <div class="dr-handle"></div>
+    <div class="dr-title">সব মেনু</div>
+    <div class="dr-grid" id="drGrid"></div>
+    <div class="dr-logout"><button onclick="doLogout()">⏻ লগআউট</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getDatabase, ref, get, set, push, update, remove, onValue, off } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const FC = {
+  apiKey:"AIzaSyAHdK7zelJcBFc8fOFSgH8G_6jEjZdNoSI",
+  authDomain:"novatech-bd-10421.firebaseapp.com",
+  databaseURL:"https://novatech-bd-10421-default-rtdb.firebaseio.com",
+  projectId:"novatech-bd-10421",
+  storageBucket:"novatech-bd-10421.firebasestorage.app",
+  messagingSenderId:"1098950143887",
+  appId:"1:1098950143887:web:bb7014007540c878b165fa"
+};
+
+const fbApp = initializeApp(FC);
+const auth  = getAuth(fbApp);
+const db    = getDatabase(fbApp);
+
+// Globals
+window._db=db; window._ref=ref; window._get=get; window._set=set;
+window._push=push; window._update=update; window._remove=remove;
+window._onValue=onValue; window._off=off;
+window.dbGet    = p      => get(ref(db,p)).then(s=>s.exists()?s.val():null);
+window.dbSet    = (p,d)  => set(ref(db,p),d);
+window.dbPush   = (p,d)  => push(ref(db,p),d);
+window.dbUpdate = (p,d)  => update(ref(db,p),d);
+window.dbListen = (p,cb) => { const r=ref(db,p); onValue(r,s=>cb(s.exists()?s.val():null)); return ()=>off(r); };
+
+const $=id=>document.getElementById(id);
+
+// Toast
+window.showToast = (msg,isErr=false)=>{
+  const t=$('toast'); t.textContent=msg;
+  t.className='toast '+(isErr?'err':'ok')+' show';
+  setTimeout(()=>{t.className='toast';},3000);
+};
+
+// Screen control
+const hideLoader = ()=>{ $('loader').style.display='none'; };
+const showAuth   = ()=>{ hideLoader(); $('appScreen').style.display='none'; $('authScreen').style.display='flex'; };
+const showApp    = ()=>{ hideLoader(); $('authScreen').style.display='none'; $('appScreen').style.display='block'; };
+
+// Safety timeout — 4s পরে Firebase না এলে auth দেখাও
+setTimeout(()=>{ if($('loader').style.display!=='none') showAuth(); }, 4000);
+
+// ── Login Method ──
+let _method='email';
+window.switchMethod = m=>{
+  _method=m;
+  $('f-email').style.display  = m==='email' ?'block':'none';
+  $('f-phone').style.display  = m==='phone' ?'block':'none';
+  $('f-empid').style.display  = m==='empid' ?'block':'none';
+  ['email','phone','empid'].forEach(x=>$('tab-'+x).classList.toggle('active',x===m));
+  $('authErr').classList.remove('show');
+};
+
+window.togglePass = ()=>{
+  const i=$('iPass'),b=$('passTogBtn'),v=i.type==='text';
+  i.type=v?'password':'text'; b.textContent=v?'👁️':'🙈';
+};
+
+const showErr = msg=>{ $('authErrTxt').textContent=msg; $('authErr').classList.add('show'); };
+
+// Phone/EmpID → email
+async function emailByPhone(ph){
+  const users=await window.dbGet('users'); if(!users) return null;
+  const inp=String(ph).replace(/[\s\-\+]/g,'').replace(/^880/,'0');
+  for(const uid in users){ const u=users[uid]; const s=String(u.phone||'').replace(/[\s\-\+]/g,'').replace(/^880/,'0'); if(s===inp&&u.email) return u.email; }
+  return null;
+}
+async function emailByEmpId(eid){
+  const users=await window.dbGet('users'); if(!users) return null;
+  for(const uid in users){ const u=users[uid]; if(String(u.empId||'').toUpperCase()===eid.toUpperCase()&&u.email) return u.email; }
+  return null;
+}
+
+// ── Login ──
+window.doLogin = async()=>{
+  $('authErr').classList.remove('show');
+  const pass=$('iPass').value.trim();
+  if(!pass){showErr('পাসওয়ার্ড দিন।');return;}
+  let email='';
+  if(_method==='email'){
+    email=$('iEmail').value.trim();
+    if(!email){showErr('ইমেইল দিন।');return;}
+  } else if(_method==='phone'){
+    const ph=$('iPhone').value.trim();
+    if(!ph){showErr('মোবাইল নম্বর দিন।');return;}
+    window.showToast('যাচাই হচ্ছে...');
+    email=await emailByPhone(ph);
+    if(!email){showErr('এই নম্বরে কোনো অ্যাকাউন্ট নেই।');return;}
+  } else {
+    const eid=$('iEmpId').value.trim().toUpperCase();
+    if(!eid){showErr('Employee ID দিন।');return;}
+    window.showToast('যাচাই হচ্ছে...');
+    email=await emailByEmpId(eid);
+    if(!email){showErr('এই ID তে কোনো অ্যাকাউন্ট নেই।');return;}
+  }
+  const btn=$('loginBtn'); btn.classList.add('loading');
+  try{
+    await signInWithEmailAndPassword(auth,email,pass);
+  }catch(e){
+    btn.classList.remove('loading');
+    const msgs={'auth/user-not-found':'অ্যাকাউন্ট পাওয়া যায়নি।','auth/wrong-password':'পাসওয়ার্ড ভুল।','auth/invalid-email':'ইমেইল সঠিক নয়।','auth/too-many-requests':'অনেকবার চেষ্টা হয়েছে।','auth/invalid-credential':'ইমেইল বা পাসওয়ার্ড ভুল।'};
+    showErr(msgs[e.code]||'লগইন ব্যর্থ। আবার চেষ্টা করুন।');
+  }
+};
+
+window.doLogout = async()=>{
+  if(!confirm('লগআউট করবেন?')) return;
+  await signOut(auth);
+};
+
+document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&$('authScreen').style.display==='flex') window.doLogin(); });
+
+// ── Auth State ──
+onAuthStateChanged(auth, async user=>{
+  $('loginBtn')?.classList.remove('loading');
+  if(!user){ showAuth(); return; }
+  try{
+    const data=await window.dbGet('users/'+user.uid)||{};
+    window.CU=user; window.CUID=user.uid;
+    window.CR=data.role||'worker';
+    window.CN=data.name||user.email;
+    window.CUDATA=data;
+    window.allUsers={};
+    window.dbListen('users',v=>{window.allUsers=v||{};});
+    buildApp(window.CR);
+    showApp();
+    window.showToast('স্বাগতম, '+window.CN+'! 👋');
+  }catch(e){
+    console.error(e); showAuth();
+  }
+});
+
+// ── App Build ──
+const NAV={
+  admin:  [{id:'dash',ico:'📊',lbl:'ড্যাশ'},{id:'sale',ico:'🧾',lbl:'বিক্রয়'},{id:'cust',ico:'👥',lbl:'কাস্টমার'},{id:'stock',ico:'📦',lbl:'স্টক'},{id:'more',ico:'☰',lbl:'আরো'}],
+  manager:[{id:'dash',ico:'📊',lbl:'ড্যাশ'},{id:'sale',ico:'🧾',lbl:'বিক্রয়'},{id:'cust',ico:'👥',lbl:'কাস্টমার'},{id:'att',ico:'📍',lbl:'হাজিরা'},{id:'more',ico:'☰',lbl:'আরো'}],
+  worker: [{id:'dash',ico:'🏠',lbl:'হোম'},{id:'sale',ico:'🧾',lbl:'বিক্রয়'},{id:'cust',ico:'👥',lbl:'কাস্টমার'},{id:'att',ico:'📍',lbl:'হাজিরা'},{id:'profile',ico:'👤',lbl:'প্রোফাইল'}],
+};
+const DRAWER={
+  admin:  [{id:'att',ico:'📍',lbl:'হাজিরা'},{id:'salary',ico:'💰',lbl:'বেতন'},{id:'exp',ico:'💸',lbl:'খরচ'},{id:'tasks',ico:'✅',lbl:'কাজ'},{id:'chat',ico:'💬',lbl:'চ্যাট'},{id:'replace',ico:'🔄',lbl:'রিপ্লেস'},{id:'analytics',ico:'🤖',lbl:'Analytics'},{id:'teams',ico:'👥',lbl:'টিম'},{id:'profile',ico:'👤',lbl:'প্রোফাইল'}],
+  manager:[{id:'salary',ico:'💰',lbl:'বেতন'},{id:'exp',ico:'💸',lbl:'খরচ'},{id:'tasks',ico:'✅',lbl:'কাজ'},{id:'chat',ico:'💬',lbl:'চ্যাট'},{id:'replace',ico:'🔄',lbl:'রিপ্লেস'},{id:'profile',ico:'👤',lbl:'প্রোফাইল'}],
+};
+
+function buildApp(role){
+  const rb=$('roleBadge');
+  rb.textContent={admin:'Admin',manager:'Manager',worker:'Worker'}[role]||role;
+  rb.className='role-badge rb-'+role;
+  // Avatar update
+  updateAvatar(window.CUDATA?.photoURL || null, window.CN || '');
+  $('bnav').innerHTML=(NAV[role]||NAV.worker).map(p=>`
+    <button class="nb" id="nb-${p.id}" onclick="${p.id==='more'?'toggleDrawer()':'goTo(\''+p.id+'\')'}">
+      <span class="nb-ico">${p.ico}</span><span class="nb-lbl">${p.lbl}</span>
+      <span class="nb-dot" id="dot-${p.id}"></span>
+    </button>`).join('');
+  $('drGrid').innerHTML=(DRAWER[role]||[]).map(p=>`
+    <button class="dr-item" onclick="goTo('${p.id}');closeDrawer()">
+      <span class="dr-ico">${p.ico}</span><span class="dr-lbl">${p.lbl}</span>
+    </button>`).join('');
+  goTo('dash');
+}
+
+// ── Router ──
+let _cur=''; const _loaded=new Set();
+window.goTo = id=>{
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  $('page-'+id)?.classList.add('active');
+  $('nb-'+id)?.classList.add('active');
+  _cur=id; closeDrawer();
+  if(!_loaded.has(id)){_loaded.add(id); loadPage(id);}
+};
+
+const PAGE_INFO={
+  dash:{ico:'📊',title:'ড্যাশবোর্ড'}, sale:{ico:'🧾',title:'বিক্রয়'},
+  cust:{ico:'👥',title:'কাস্টমার'},   stock:{ico:'📦',title:'স্টক'},
+  att:{ico:'📍',title:'হাজিরা'},       salary:{ico:'💰',title:'বেতন'},
+  exp:{ico:'💸',title:'খরচ'},          tasks:{ico:'✅',title:'কাজ'},
+  chat:{ico:'💬',title:'চ্যাট'},        replace:{ico:'🔄',title:'রিপ্লেসমেন্ট'},
+  analytics:{ico:'🤖',title:'Analytics'}, teams:{ico:'👥',title:'টিম'},
+  profile:{ico:'👤',title:'প্রোফাইল'},
+};
+
+function loadPage(id){
+  const pg=$('page-'+id); if(!pg) return;
+  const info=PAGE_INFO[id]||{ico:'📄',title:id};
+  pg.innerHTML=`<div class="page-ph"><div class="ph-ico">${info.ico}</div><div class="ph-title">${info.title}</div><div class="ph-sub" style="color:var(--text-3);font-size:12px">শীঘ্রই আসছে...</div></div>`;
+}
+
+// ── Avatar Update ──
+function updateAvatar(photoURL, name) {
+  const img  = document.getElementById('tbAvatarImg');
+  const init = document.getElementById('tbAvatarInitial');
+  if (!img || !init) return;
+  if (photoURL) {
+    img.src = photoURL;
+    img.style.display = 'block';
+    init.style.display = 'none';
+    img.onerror = () => { img.style.display='none'; init.style.display='block'; };
+  } else {
+    img.style.display = 'none';
+    init.style.display = 'block';
+    // নামের প্রথম অক্ষর দেখাও
+    const first = (name||'U').trim()[0].toUpperCase();
+    init.textContent = first;
+  }
+}
+window.updateAvatar = updateAvatar;
+
+// ── Drawer ──
+let _drOpen=false;
+window.toggleDrawer = ()=>_drOpen?closeDrawer():openDrawer();
+function openDrawer(){_drOpen=true;$('drawer').classList.add('open');$('drawerOv').classList.add('open');}
+window.closeDrawer  = ()=>{_drOpen=false;$('drawer').classList.remove('open');$('drawerOv').classList.remove('open');}
+</script>
+</body>
+</html>
